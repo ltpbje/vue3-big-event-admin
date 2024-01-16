@@ -2,7 +2,8 @@
   "name": "vue3-big-event-admin",
   "version": "0.0.0",
   "private": true,
-  "type": "module","lint-staged": {
+  "type": "module",
+  "lint-staged": {
     "*.{js,ts,vue}": [
       "eslint --fix"
     ]
@@ -30,6 +31,7 @@
     "husky": "^8.0.0",
     "lint-staged": "^15.2.0",
     "prettier": "^3.0.3",
+    "sass": "^1.69.7",
     "vite": "^5.0.10"
   }
 }
