@@ -1,13 +1,15 @@
 <script setup>
 // import { useRouter, useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/modules/user'
+// import { useUserStore } from '@/stores/modules/user'
+import { useUserStore, useCounterStore } from '@/stores/index'
 const Router = useRouter()
 // const Route = useRoute()
 const toList = () => {
   Router.push('/list')
 }
 const userStore = useUserStore()
+const counterStore = useCounterStore()
 </script>
 
 <template>
@@ -25,6 +27,9 @@ const userStore = useUserStore()
     修改token</el-button
   >
   <el-button @click="userStore.removeToken"> 清空token</el-button>
+  <hr />
+  {{ counterStore.count }}
+  <el-button @click="counterStore.addCount(2)">加数--2</el-button>
 </template>
 
 <style scoped></style>

@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useCounterStore = defineStore('counter', () => {
+export const useCounterStore = defineStore('big-counter', () => {
   const count = ref(100)
-  const addCount = () => {
-    count.value = count.value + 2
+  const addCount = (n) => {
+    count.value = count.value + n
   }
   return { count, addCount }
 })
