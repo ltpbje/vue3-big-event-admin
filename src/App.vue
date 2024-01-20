@@ -13,6 +13,12 @@ const counterStore = useCounterStore()
 </script>
 
 <template>
+  <hr />
+  <router-view></router-view>
+  <hr />
+  <hr />
+  <hr />
+
   <div>我是APP</div>
   <button @click="$router.push('/home')">首页</button>
   <button @click="toList()">列表</button>
