@@ -1,12 +1,27 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+import { useRegisterService } from '@/api/user.js'
+import { ElMessage } from 'element-plus'
 const isRegister = ref(true)
+// 整个的用于提交的form数据对象
 const formModel = ref({
   username: '',
   password: '',
   repassword: ''
 })
+const form = ref()
+// 整个表单的校验规则
+// 1. 非空校验 required: true      message消息提示，  trigger触发校验的时机 blur change
+// 2. 长度校验 min:xx, max: xx
+// 3. 正则校验 pattern: 正则规则    \S 非空字符
+// 4. 自定义校验 => 自己写逻辑校验 (校验函数)
+//    validator: (rule, value, callback)
+//    (1) rule  当前校验规则相关的信息
+//    (2) value 所校验的表单元素目前的表单值
+//    (3) callback 无论成功还是失败，都需要 callback 回调
+//        - callback() 校验成功
+//        - callback(new Error(错误信息)) 校验失败
 const rules = {
   // 表单校验规则
   username: [
@@ -39,6 +54,18 @@ const rules = {
       trigger: 'blur'
     }
   ]
+}
+const register = async () => {
+  await form.value.validate()
+  // 校验通过
+  await useRegisterService(formModel.value)
+  // console.log('注册成功')
+  ElMessage({
+    showClose: true,
+    message: '注册成功',
+    type: 'success'
+  })
+  isRegister.value = false
 }
 </script>
 <!-- 
@@ -97,7 +124,12 @@ const rules = {
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space>
+          <el-button
+            @click="register"
+            class="button"
+            type="primary"
+            auto-insert-space
+          >
             注册
           </el-button>
         </el-form-item>
