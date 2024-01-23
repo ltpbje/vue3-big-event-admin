@@ -1,16 +1,17 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import { useRegisterService } from '@/api/user.js'
-import { ElMessage } from 'element-plus'
+import { userRegisterService } from '@/api/user.js'
+// import { ElMessage } from 'element-plus'
 const isRegister = ref(true)
+const form = ref()
 // 整个的用于提交的form数据对象
 const formModel = ref({
   username: '',
   password: '',
   repassword: ''
 })
-const form = ref()
+
 // 整个表单的校验规则
 // 1. 非空校验 required: true      message消息提示，  trigger触发校验的时机 blur change
 // 2. 长度校验 min:xx, max: xx
@@ -29,7 +30,7 @@ const rules = {
     { min: 3, max: 8, message: '用户名长度在3-8之间', trigger: 'blur' }
   ],
   password: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { required: true, message: '请输入密码', trigger: 'blur' },
     {
       pattern: /^\S{6,15}$/,
       message: '密码为长度为 6-15的 非空字符',
@@ -37,7 +38,7 @@ const rules = {
     }
   ],
   repassword: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { required: true, message: '请输入密码', trigger: 'blur' },
     {
       pattern: /^\S{6,15}$/,
       message: '密码为长度为 6-15的 非空字符',
@@ -56,17 +57,26 @@ const rules = {
   ]
 }
 const register = async () => {
+  // 注册成功之前，先进行校验，校验成功 → 请求，校验失败 → 自动提示
   await form.value.validate()
-  // 校验通过
-  await useRegisterService(formModel.value)
-  // console.log('注册成功')
-  ElMessage({
-    showClose: true,
-    message: '注册成功',
-    type: 'success'
-  })
+  await userRegisterService(formModel.value)
+  ElMessage.success('注册成功')
   isRegister.value = false
 }
+// const register = async () => {
+//   await form.value.validate()
+//   // 校验通过
+//   const res = await useRegisterService(formModel.value)
+//   // console.log('注册成功')
+//   console.log('结果', res)
+//   ElMessage({
+//     showClose: true,
+//     message: '注册成功',
+//     type: 'success'
+//     // duration: 0
+//   })
+//   isRegister.value = false
+// }
 </script>
 <!-- 
     1. 结构相关
