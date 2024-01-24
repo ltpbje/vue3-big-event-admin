@@ -4,15 +4,16 @@ import { ElMessage } from 'element-plus'
 import router from '@/router'
 
 const baseURL = 'http://big-event-vue-api-t.itheima.net'
-const useStore = useUserStore()
+
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
   baseURL,
-  timeout: 5000
+  timeout: 10000
 })
 
 instance.interceptors.request.use(
   (config) => {
+    const useStore = useUserStore()
     // TODO 2. 携带token
     if (useStore.token) {
       config.headers.Authorization = useStore.token
@@ -29,7 +30,7 @@ instance.interceptors.response.use(
       return res
     }
     // TODO 3. 处理业务失败 抛出错误
-    ElMessage(res.data.message || '请求失败')
+    ElMessage(res.data.message || '服务异常')
     return Promise.reject(res.data)
   },
   (err) => {
@@ -46,3 +47,4 @@ instance.interceptors.response.use(
 )
 
 export default instance
+export { baseURL }
