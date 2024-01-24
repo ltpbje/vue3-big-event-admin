@@ -1,5 +1,6 @@
 // import { createRouter, createWebHistory,createWebHashHistory } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores'
 // createRouter 创建路由实例，===> new VueRouter()
 // 1. history模式: createWebHistory()   http://xxx/user
 // 2. hash模式: createWebHashHistory()  http://xxx/#/user
@@ -41,6 +42,14 @@ const router = createRouter({
       ]
     }
   ]
+})
+router.beforeEach((to) => {
+  // console.log(to, from, next)
+  // 1. 判断是否登录
+  const userStore = useUserStore()
+  if (!userStore.token && to.path !== '/login') {
+    return '/login'
+  }
 })
 
 export default router
