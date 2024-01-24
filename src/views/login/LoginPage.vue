@@ -1,9 +1,12 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import { userRegisterService } from '@/api/user.js'
+import { userLoginService, userRegisterService } from '@/api/user.js'
+import { useUserStore } from '@/stores'
 // import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 const isRegister = ref(true)
+const userStore = useUserStore()
 const form = ref()
 // 整个的用于提交的form数据对象
 const formModel = ref({
@@ -56,26 +59,39 @@ const rules = {
     }
   ]
 }
+// const register = async () => {
+//   // 注册成功之前，先进行校验，校验成功 → 请求，校验失败 → 自动提示
+//   await form.value.validate()
+//   await userRegisterService(formModel.value)
+//   ElMessage.success('注册成功')
+//   isRegister.value = false
+// }
 const register = async () => {
-  // 注册成功之前，先进行校验，校验成功 → 请求，校验失败 → 自动提示
   await form.value.validate()
-  await userRegisterService(formModel.value)
+  // 校验通过
+  const res = await userRegisterService(formModel.value)
+  // console.log('注册成功')
+  console.log('结果', res)
   ElMessage.success('注册成功')
   isRegister.value = false
 }
-// const register = async () => {
+const router = useRouter()
+const login = async () => {
+  await form.value.validate()
+  const res = await userLoginService(formModel.value)
+  console.log('登录成功', res)
+  // 在pinia仓库中持久化存储token
+  userStore.setToken(res.data.token)
+  ElMessage.success('登录成功')
+  router.push('/')
+}
+//
+// const login = async () => {
 //   await form.value.validate()
-//   // 校验通过
-//   const res = await useRegisterService(formModel.value)
-//   // console.log('注册成功')
-//   console.log('结果', res)
-//   ElMessage({
-//     showClose: true,
-//     message: '注册成功',
-//     type: 'success'
-//     // duration: 0
-//   })
-//   isRegister.value = false
+//   const res = await userLoginService(formModel.value)
+//   userStore.setToken(res.data.token)
+//   ElMessage.success('登录成功')
+//   router.push('/')
 // }
 </script>
 <!-- 
@@ -149,15 +165,27 @@ const register = async () => {
           </el-link>
         </el-form-item>
       </el-form>
-      <el-form ref="form" size="large" autocomplete="off" v-else>
+      <el-form
+        :model="formModel"
+        :rules="rules"
+        ref="form"
+        size="large"
+        autocomplete="off"
+        v-else
+      >
         <el-form-item>
           <h1>登录</h1>
         </el-form-item>
-        <el-form-item>
-          <el-input :prefix-icon="User" placeholder="请输入用户名"></el-input>
-        </el-form-item>
-        <el-form-item>
+        <el-form-item prop="username">
           <el-input
+            v-model="formModel.username"
+            :prefix-icon="User"
+            placeholder="请输入用户名"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            v-model="formModel.password"
             name="password"
             :prefix-icon="Lock"
             type="password"
@@ -171,7 +199,11 @@ const register = async () => {
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space
+          <el-button
+            @click="login"
+            class="button"
+            type="primary"
+            auto-insert-space
             >登录</el-button
           >
         </el-form-item>
