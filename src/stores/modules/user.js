@@ -16,7 +16,10 @@ export const useUserStore = defineStore(
       const res = await getUserInfoService()
       user.value = res.data.data
     }
-    return { token, setToken, removeToken, getUserInfo, user }
+    const setUserInfo = (obj) => {
+      user.value = obj
+    }
+    return { token, setToken, removeToken, getUserInfo, setUserInfo, user }
   },
   {
     persist: true
