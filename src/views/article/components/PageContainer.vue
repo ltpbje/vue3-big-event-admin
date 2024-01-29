@@ -41,6 +41,7 @@ const tableData = [
 .box-card {
   min-height: 100%;
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
