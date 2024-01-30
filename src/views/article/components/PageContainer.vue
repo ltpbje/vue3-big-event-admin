@@ -1,5 +1,12 @@
 <script setup>
-const tableData = [
+import { ref, defineProps } from 'vue'
+defineProps({
+  title: {
+    type: String,
+    required: true
+  }
+})
+const tableData = ref([
   {
     date: '2016-05-03',
     name: 'Tom',
@@ -20,14 +27,14 @@ const tableData = [
     name: 'Tom',
     address: 'No. 189, Grove St, Los Angeles'
   }
-]
+])
 </script>
 <template>
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
-        <span>文章分类</span>
-        <el-button class="button" text>添加分类</el-button>
+        <span>{{ title }}</span>
+        <slot name="extra"></slot>
       </div>
     </template>
     <el-table :data="tableData" style="width: 100%">
