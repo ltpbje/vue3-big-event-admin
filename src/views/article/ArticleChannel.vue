@@ -26,10 +26,20 @@ getChannelList()
       <el-table-column prop="cate_name" label="分类名称" width="180" />
       <el-table-column prop="cate_alias" label="分类别名" width="180" />
       <el-table-column prop="address" label="操作" width="100">
-        <el-row>
-          <el-button type="primary" :icon="Edit" circle></el-button>
-          <el-button type="danger" :icon="Delete" circle></el-button>
-        </el-row>
+        <template #default="{ row, $index }">
+          <el-button
+            type="primary"
+            :icon="Edit"
+            @click="onEditChannel({ row, $index })"
+            circle
+          ></el-button>
+          <el-button
+            type="danger"
+            :icon="Delete"
+            @click="onDeleteChannel({ row, $index })"
+            circle
+          ></el-button>
+        </template>
       </el-table-column>
     </el-table>
   </page-container>
