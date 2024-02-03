@@ -1,9 +1,11 @@
 <script setup>
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { artGetChannelList } from '@/api/article.js'
+import ChannelEdit from './components/ChannelEdit.vue'
 import { ref } from 'vue'
 const loading = ref(false)
 const channelList = ref([])
+const dialog = ref()
 const getChannelList = async () => {
   loading.value = true
   // 请求获取频道列表
@@ -26,6 +28,7 @@ const dialogVisible = ref(false)
 // })
 const onAddChannel = () => {
   dialogVisible.value = true
+  dialog.value.open({})
 }
 </script>
 
@@ -59,7 +62,8 @@ const onAddChannel = () => {
         <el-empty description="没有数据" />
       </template>
     </el-table>
-    <el-dialog
+    <ChannelEdit ref="dialog"> </ChannelEdit>
+    <!-- <el-dialog
       v-model="dialogVisible"
       title="添加分类"
       width="500"
@@ -78,7 +82,7 @@ const onAddChannel = () => {
           </el-button>
         </div>
       </template>
-    </el-dialog>
+    </el-dialog> -->
   </page-container>
 </template>
 <style lang="scss" scoped>
