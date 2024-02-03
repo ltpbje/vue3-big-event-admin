@@ -5,7 +5,7 @@ import { userLoginService, userRegisterService } from '@/api/user.js'
 import { useUserStore } from '@/stores'
 // import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
-const isRegister = ref(true)
+const isRegister = ref(false)
 const userStore = useUserStore()
 const form = ref()
 // 整个的用于提交的form数据对象
