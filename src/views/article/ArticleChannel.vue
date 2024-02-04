@@ -23,6 +23,9 @@ const onEditChannel = ({ row, $index }) => {
 const onDeleteChannel = ({ row, $index }) => {
   console.log(row, $index)
 }
+const onSuccess = () => {
+  getChannelList()
+}
 const dialogVisible = ref(false)
 // onMounted(() => {
 //   getChannelList()
@@ -63,7 +66,7 @@ const onAddChannel = () => {
         <el-empty description="没有数据" />
       </template>
     </el-table>
-    <ChannelEdit ref="dialog"> </ChannelEdit>
+    <ChannelEdit ref="dialog" @success="onSuccess"> </ChannelEdit>
     <!-- <el-dialog
       v-model="dialogVisible"
       title="添加分类"

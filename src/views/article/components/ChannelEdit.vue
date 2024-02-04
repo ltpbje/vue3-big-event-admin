@@ -1,9 +1,28 @@
 <script setup>
 import { ref } from 'vue'
+import { artAddChannelService, artEditChannelService } from '@/api/article.js'
+import { ElMessage } from 'element-plus'
 const dialogVisible = ref(false)
+const formRef = ref()
+const emit = defineEmits(['success'])
+const onsubmit = async () => {
+  await formRef.value.validate()
+  // 关闭弹窗、
+  dialogVisible.value = false
+  // 提交表单 调用接口
+  if (formModel.value.id) {
+    await artEditChannelService(formModel.value)
+    ElMessage.success('编辑成功')
+  } else {
+    await artAddChannelService(formModel.value)
+    ElMessage.success('添加成功')
+  }
+  emit('success')
+}
 const open = (row) => {
   dialogVisible.value = true
   console.log(row)
+  formModel.value = { ...row }
 }
 defineExpose({
   open
@@ -35,11 +54,17 @@ const rules = {
 <template>
   <el-dialog
     v-model="dialogVisible"
-    title="添加弹层"
+    :title="formModel.id ? '编辑分类' : '添加分类'"
     width="30%"
     :before-close="handleClose"
   >
-    <el-form :rules="rules" :model="formModel" label-width="120px">
+    <el-form
+      ref="formRef"
+      :rules="rules"
+      :model="formModel"
+      label-width="120px30px"
+      style="padding-right: 30px"
+    >
       <el-form-item label="分类名称" prop="cate_name">
         <el-input v-model="formModel.cate_name" />
       </el-form-item>
@@ -50,9 +75,7 @@ const rules = {
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">
-          确认
-        </el-button>
+        <el-button type="primary" @click="onsubmit"> 确认 </el-button>
       </div>
     </template>
   </el-dialog>
