@@ -17,6 +17,7 @@ const getChannelList = async () => {
 getChannelList()
 const onEditChannel = ({ row, $index }) => {
   console.log(row, $index)
+  dialog.value.open(row)
   // dialogVisible.value = true
 }
 const onDeleteChannel = ({ row, $index }) => {
