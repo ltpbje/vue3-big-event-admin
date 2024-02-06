@@ -8,7 +8,8 @@ export const artEditChannelService = (data) =>
   request.put('/my/cate/info', data)
 
 //删除文章分类
-export const artDelChannelService = (id) =>
-  request.delete(`/my/cate/del`, {
+export const artDelChannelService = (id) => {
+  return request.delete(`/my/cate/del`, {
     params: { id }
   })
+}
