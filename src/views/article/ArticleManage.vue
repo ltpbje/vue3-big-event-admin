@@ -31,7 +31,7 @@ const onEdit = (row) => {
           <el-option label="体育" value="222"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="发布状态">
+      <el-form-item style="width: 200px" label="发布状态">
         <el-select>
           <el-option label="已发布" value="已发布"></el-option>
           <el-option label="草稿" value="草稿"></el-option>

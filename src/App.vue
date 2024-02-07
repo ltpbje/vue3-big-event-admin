@@ -1,4 +1,6 @@
 <script setup>
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+
 // import { useRouter, useRoute } from 'vue-router'
 // import { useRouter } from 'vue-router'
 // import { useUserStore } from '@/stores/modules/user'
@@ -13,7 +15,9 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <el-config-provider :locale="zhCn">
+    <router-view></router-view>
+  </el-config-provider>
   <!-- <div>我是APP</div>
   <button @click="$router.push('/home')">首页</button>
   <button @click="toList()">列表</button>
