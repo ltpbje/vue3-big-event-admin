@@ -13,3 +13,8 @@ export const artDelChannelService = (id) => {
     params: { id }
   })
 }
+// 获取文章列表
+export const artGetChannelsService = () =>
+  request.get('/my/article/list', {
+    params: {}
+  })

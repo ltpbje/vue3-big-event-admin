@@ -1,4 +1,5 @@
 <script setup>
+import ChannelSelect from './components/ChannelSelect.vue'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 // 假数据
@@ -25,11 +26,8 @@ const onEdit = (row) => {
 <template>
   <page-container title="添加文章">
     <el-form inline>
-      <el-form-item style="width: 200px" label="文章分类:">
-        <el-select>
-          <el-option label="新闻" value="111"></el-option>
-          <el-option label="体育" value="222"></el-option>
-        </el-select>
+      <el-form-item style="width: 200px" label="文章分类：">
+        <channel-select></channel-select>
       </el-form-item>
       <el-form-item style="width: 200px" label="发布状态">
         <el-select>
