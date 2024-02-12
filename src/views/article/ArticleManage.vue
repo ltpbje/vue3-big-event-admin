@@ -1,4 +1,5 @@
 <script setup>
+import { artGetChannelsService } from '@/api/article'
 import ChannelSelect from './components/ChannelSelect.vue'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
@@ -19,6 +20,23 @@ const articleList = ref([
     cate_name: '体育'
   }
 ])
+const total = ref(5)
+
+const params = ref({
+  pagenum: 1,
+  pagesize: 2,
+  cate_id: '',
+  state: '已发布'
+})
+// 获取文章列表
+const getChannelList = async () => {
+  const res = await artGetChannelsService(params.value)
+  console.log('获取文章列表', res)
+  articleList.value = res.data.data
+  total.value = res.data.total
+}
+getChannelList()
+const cateId = ref(84945)
 const onEdit = (row) => {
   console.log('编辑', row)
 }
@@ -27,7 +45,9 @@ const onEdit = (row) => {
   <page-container title="添加文章">
     <el-form inline>
       <el-form-item style="width: 200px" label="文章分类：">
-        <channel-select></channel-select>
+        <!--Vue2 =>v-model :value 和@input 的简写-->
+        <!-- Vue3 => v-model:modelValue 和 @update:modelValue 的简写-->
+        <channel-select v-model="cateId"></channel-select>
       </el-form-item>
       <el-form-item style="width: 200px" label="发布状态">
         <el-select>

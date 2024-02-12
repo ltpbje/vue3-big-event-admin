@@ -1,16 +1,24 @@
 <script setup>
 import { ref } from 'vue'
 import { artGetChannelList } from '@/api/article'
+defineProps({
+  modelValue: {
+    type: [Number, String]
+  }
+})
+const emit = defineEmits(['update:modelValue'])
 const channelList = ref([])
 const getChannelList = async () => {
   const res = await artGetChannelList()
   channelList.value = res.data.data
 }
 getChannelList()
-artGetChannelList
 </script>
 <template>
-  <el-select>
+  <el-select
+    :modelValue="modelValue"
+    @update:modelValue="emit('update:modelValue', $event)"
+  >
     <el-option
       v-for="item in channelList"
       :key="item.id"
