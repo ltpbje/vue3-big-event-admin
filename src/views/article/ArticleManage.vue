@@ -3,6 +3,7 @@ import { artGetChannelsService } from '@/api/article'
 import ChannelSelect from './components/ChannelSelect.vue'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+import { formatTime } from '@/utils/format'
 // 假数据
 const articleList = ref([
   {
@@ -67,7 +68,12 @@ const onEdit = (row) => {
         </template>
       </el-table-column>
       <el-table-column label="分类" prop="cate_name"></el-table-column>
-      <el-table-column label="发表时间" prop="pub_date"></el-table-column>
+      <el-table-column label="发表时间" prop="pub_date">
+        <template #default="{ row }">
+          {{ formatTime(row.pub_date) }}
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" prop="state"></el-table-column>
       <!-- 利用作用域插槽row可以获取当前行的数据 => v-for遍历item- -->
       <el-table-column label="操作">
         <template #default="{ row }">
@@ -86,5 +92,16 @@ const onEdit = (row) => {
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      v-model:current-page="params.pagenum"
+      v-model:page-size="params.pagesize"
+      :page-sizes="[1, 5, 10, 100]"
+      :disabled="disabled"
+      :background="background"
+      layout="jumper,total, sizes, prev, pager, next "
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </page-container>
 </template>
