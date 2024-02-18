@@ -21,26 +21,29 @@ const articleList = ref([
     cate_name: '体育'
   }
 ])
+const loading = ref(false)
 const total = ref(5)
 
 const params = ref({
   pagenum: 1,
   pagesize: 2,
   cate_id: '',
-  state: '已发布'
+  state: ''
 })
 // 获取文章列表
 const getChannelList = async () => {
+  loading.value = true
   const res = await artGetChannelsService(params.value)
   console.log('获取文章列表', res)
   articleList.value = res.data.data
   total.value = res.data.total
+  loading.value = false
 }
 getChannelList()
-const cateId = ref(84945)
 const onEdit = (row) => {
   console.log('编辑', row)
 }
+// 处理分页逻辑
 const onSizeChange = (size) => {
   params.value.pagenum = 1
   params.value.pagesize = size
@@ -50,6 +53,18 @@ const onCurrentChange = (page) => {
   params.value.pagenum = page
   getChannelList()
 }
+// 处理筛选逻辑
+const onSearch = () => {
+  params.value.pagenum = 1
+  getChannelList()
+}
+// 处理重置逻辑
+const onReset = () => {
+  params.value.pagenum = 1
+  params.value.cate_id = ''
+  params.value.state = ''
+  getChannelList()
+}
 </script>
 <template>
   <page-container title="添加文章">
@@ -57,20 +72,20 @@ const onCurrentChange = (page) => {
       <el-form-item style="width: 200px" label="文章分类：">
         <!--Vue2 =>v-model :value 和@input 的简写-->
         <!-- Vue3 => v-model:modelValue 和 @update:modelValue 的简写-->
-        <channel-select v-model="cateId"></channel-select>
+        <channel-select v-model="params.cate_id"></channel-select>
       </el-form-item>
       <el-form-item style="width: 200px" label="发布状态">
-        <el-select>
+        <el-select v-model="params.state">
           <el-option label="已发布" value="已发布"></el-option>
           <el-option label="草稿" value="草稿"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">搜索</el-button>
-        <el-button>重置</el-button>
+        <el-button @click="onSearch" type="primary">搜索</el-button>
+        <el-button @click="onReset">重置</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="articleList" style="width: 100%">
+    <el-table v-loading="loading" :data="articleList" style="width: 100%">
       <el-table-column :value="articleList" label="文章标题">
         <template #default="{ row }">
           <el-link type="primary" :underline="false">{{ row.title }}</el-link>
