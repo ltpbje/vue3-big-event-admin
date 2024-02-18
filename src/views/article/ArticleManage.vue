@@ -41,6 +41,15 @@ const cateId = ref(84945)
 const onEdit = (row) => {
   console.log('编辑', row)
 }
+const onSizeChange = (size) => {
+  params.value.pagenum = 1
+  params.value.pagesize = size
+  getChannelList()
+}
+const onCurrentChange = (page) => {
+  params.value.pagenum = page
+  getChannelList()
+}
 </script>
 <template>
   <page-container title="添加文章">
@@ -95,13 +104,13 @@ const onEdit = (row) => {
     <el-pagination
       v-model:current-page="params.pagenum"
       v-model:page-size="params.pagesize"
-      :page-sizes="[1, 5, 10, 100]"
+      :page-sizes="[2, 3, 5, 10]"
       :disabled="disabled"
-      :background="background"
+      :background="true"
       layout="jumper,total, sizes, prev, pager, next "
       :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
+      @size-change="onSizeChange"
+      @current-change="onCurrentChange"
     />
   </page-container>
 </template>
