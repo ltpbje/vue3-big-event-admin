@@ -3,6 +3,7 @@ import { artGetChannelsService } from '@/api/article'
 import ChannelSelect from './components/ChannelSelect.vue'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+import ArticleEdit from './components/ArticleEdit.vue'
 import { formatTime } from '@/utils/format'
 // 假数据
 const articleList = ref([
@@ -40,9 +41,9 @@ const getChannelList = async () => {
   loading.value = false
 }
 getChannelList()
-const onEdit = (row) => {
-  console.log('编辑', row)
-}
+// const onEdit = (row) => {
+//   console.log('编辑', row)
+// }
 // 处理分页逻辑
 const onSizeChange = (size) => {
   params.value.pagenum = 1
@@ -52,6 +53,17 @@ const onSizeChange = (size) => {
 const onCurrentChange = (page) => {
   params.value.pagenum = page
   getChannelList()
+}
+const articleEditRef = ref()
+// const drawer = ref(false)
+// 添加文章
+const onAddActicle = () => {
+  // drawer.value = true
+  articleEditRef.value.open({})
+}
+const onEdit = (row) => {
+  // drawer.value = true
+  articleEditRef.value.open(row)
 }
 // 处理筛选逻辑
 const onSearch = () => {
@@ -68,6 +80,9 @@ const onReset = () => {
 </script>
 <template>
   <page-container title="添加文章">
+    <template v-slot:extra>
+      <el-button @click="onAddActicle" type="primary">添加文章</el-button>
+    </template>
     <el-form inline>
       <el-form-item style="width: 200px" label="文章分类：">
         <!--Vue2 =>v-model :value 和@input 的简写-->
@@ -124,8 +139,21 @@ const onReset = () => {
       :background="true"
       layout="jumper,total, sizes, prev, pager, next "
       :total="total"
+      style="justify-content: end; margin-top: 20px"
       @size-change="onSizeChange"
       @current-change="onCurrentChange"
     />
+
+    <article-edit ref="articleEditRef"></article-edit>
+    <!-- 抽屉 -->
+    <!-- <el-drawer
+      v-model="drawer"
+      title="I am the title"
+      :direction="ltr"
+      :before-close="handleClose"
+      size="50%"
+    >
+      <span>Hi, there!</span>
+    </el-drawer> -->
   </page-container>
 </template>
