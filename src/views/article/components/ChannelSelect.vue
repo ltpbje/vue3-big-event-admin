@@ -4,6 +4,9 @@ import { artGetChannelList } from '@/api/article'
 defineProps({
   modelValue: {
     type: [Number, String]
+  },
+  width: {
+    type: String
   }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -17,6 +20,7 @@ getChannelList()
 <template>
   <el-select
     :modelValue="modelValue"
+    :style="{ width: width }"
     @update:modelValue="emit('update:modelValue', $event)"
   >
     <el-option

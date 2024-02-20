@@ -135,7 +135,6 @@ const onReset = () => {
       v-model:current-page="params.pagenum"
       v-model:page-size="params.pagesize"
       :page-sizes="[2, 3, 5, 10]"
-      :disabled="disabled"
       :background="true"
       layout="jumper,total, sizes, prev, pager, next "
       :total="total"
