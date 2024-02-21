@@ -77,6 +77,15 @@ const onReset = () => {
   params.value.state = ''
   getChannelList()
 }
+// 发布文章成功后的处理
+const onPublishSuccess = (type) => {
+  if (type === 'add') {
+    // 如果是添加，需要跳转渲染最后一页，编辑直接渲染当前页
+    const lastPage = Math.ceil((total.value + 1) / params.value.pagesize)
+    params.value.pagenum = lastPage
+  }
+  getChannelList()
+}
 </script>
 <template>
   <page-container title="添加文章">
@@ -143,7 +152,10 @@ const onReset = () => {
       @current-change="onCurrentChange"
     />
 
-    <article-edit ref="articleEditRef"></article-edit>
+    <article-edit
+      ref="articleEditRef"
+      @success="onPublishSuccess"
+    ></article-edit>
     <!-- 抽屉 -->
     <!-- <el-drawer
       v-model="drawer"
