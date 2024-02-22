@@ -23,3 +23,11 @@ export const artGetChannelsService = (params) =>
 export const artPublishService = (data) => {
   return request.post('/my/article/add', data)
 }
+// 获取文章详情
+export const artGetDetailService = (id) => {
+  return request.get(`/my/article/info`, { params: { id } })
+}
+// 编辑文章接口
+export const artEditService = (data) => {
+  return request.put('/my/article/edit', data)
+}

@@ -61,7 +61,7 @@ const onAddActicle = () => {
   // drawer.value = true
   articleEditRef.value.open({})
 }
-const onEdit = (row) => {
+const onEdit = async (row) => {
   // drawer.value = true
   articleEditRef.value.open(row)
 }
