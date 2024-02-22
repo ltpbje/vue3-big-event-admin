@@ -29,5 +29,5 @@ export const artGetDetailService = (id) => {
 }
 // 编辑文章接口
 export const artEditService = (data) => {
-  return request.put('/my/article/edit', data)
+  return request.put('/my/article/info', data)
 }

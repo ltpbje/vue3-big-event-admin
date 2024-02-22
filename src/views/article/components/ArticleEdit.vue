@@ -4,7 +4,11 @@ import ChannelSelect from './ChannelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import { baseURL } from '@/utils/request'
-import { artPublishService, artGetDetailService } from '@/api/article'
+import {
+  artPublishService,
+  artGetDetailService,
+  artEditService
+} from '@/api/article'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
@@ -35,8 +39,12 @@ const onPublish = async (state) => {
   for (let key in formModel.value) {
     fd.append(key, formModel.value[key])
   }
-  if (formModel.value.id) {
+  if (formModel.value.cate_id) {
     console.log('编辑操作')
+    await artEditService(fd)
+    ElMessage.success('编辑成功')
+    visibleDrawer.value = false
+    emit('success', 'edit')
   } else {
     await artPublishService(fd)
     ElMessage.success('发布成功')
@@ -52,13 +60,13 @@ const open = async (row) => {
   if (row.id) {
     console.log('编辑回显')
     const res = await artGetDetailService(row.id)
-    // formModel.value.id = row.id
+    formModel.value.id = row.id
     formModel.value = res.data.data
     // shu'j
     imgUrl.value = baseURL + formModel.value.cover_img
     // 提交给后台，需要的是 file 格式的，将网络图片，转成 file 格式
     // 网络图片转成 file 对象, 需要转换一下
-    const file = imageUrlToFile(imgUrl.value, 'cover_img')
+    const file = await imageUrlToFile(imgUrl.value, 'cover_img')
     formModel.value.cover_img = file
   } else {
     formModel.value = { ...defaultForm }
