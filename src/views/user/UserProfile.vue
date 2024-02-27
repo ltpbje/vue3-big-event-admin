@@ -2,9 +2,11 @@
 import PageContainer from '@/components/PageContainer.vue'
 import { ref } from 'vue'
 import { useUserStore } from '@/stores'
+import { userUpdateInfoService } from '@/api/user'
 // 是在使用仓库中数据的初始值（无需响应式）解构无问题
 const {
-  user: { username, nickname, email, id }
+  user: { username, nickname, email, id },
+  getUserInfo
 } = useUserStore()
 const formModel = ref({
   username,
@@ -23,12 +25,20 @@ const rules = {
     { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
   ]
 }
-
 const formRef = ref(null)
+const submitForm = async () => {
+  // 验证表单
+  await formRef.value.validate()
+  // 更新 后台的 个人资料 数据
+  await userUpdateInfoService(formModel.value)
+  // 通知 user 模块进行数据更新
+  await getUserInfo()
+  ElMessage.success('修改成功')
+}
 </script>
 
 <template>
-  <page-container>
+  <page-container title="基本资料">
     <el-form :model="formModel" :rules="rules" ref="formRef">
       <el-form-item label="登录名称" prop="username">
         <el-input v-model="formModel.username" disabled></el-input>
