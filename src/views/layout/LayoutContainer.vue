@@ -15,10 +15,9 @@ import { onMounted } from 'vue'
 // import { ElMessageBox } from 'element-plus'
 import router from '@/router'
 const userStore = useUserStore()
-onMounted(() => {
-  userStore.getUserInfo()
+onMounted(async () => {
+  await userStore.getUserInfo()
 })
-const user = userStore.user
 const handleCommand = (command) => {
   if (command === 'logout') {
     ElMessageBox.confirm('确定要退出登录吗?', '温馨提示', {
@@ -101,11 +100,13 @@ const handleCommand = (command) => {
     <el-container>
       <el-header>
         <div>
-          黑马程序员：<strong>{{ user.nickname || user.username }}</strong>
+          黑马程序员：<strong>{{
+            userStore.user.nickname || userStore.user.username
+          }}</strong>
         </div>
         <el-dropdown placement="bottom-end" @command="handleCommand">
           <span class="el-dropdown__box">
-            <el-avatar :src="user.user_pic || avatar" />
+            <el-avatar :src="userStore.user.user_pic || avatar" />
             <el-icon>
               <CaretBottom />
             </el-icon>
