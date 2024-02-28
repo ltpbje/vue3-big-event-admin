@@ -2,16 +2,48 @@
 import { ref } from 'vue'
 import { Plus, Upload } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
+import { userUpdateAvatarService } from '@/api/user'
+import { ElMessage } from 'element-plus'
 const userStore = useUserStore()
+const uploadRef = ref()
 const imageUrl = ref(userStore.user.user_pic)
+const onSelectFile = (uploadFile) => {
+  const reader = new FileReader()
+  reader.readAsDataURL(uploadFile.raw)
+  // imageUrl.value = URL.createObjectURL(uploadFile.raw)
+  reader.onload = async () => {
+    imageUrl.value = reader.result
+    // await userUpdateAvatarService(imageUrl.value)
+    // console.log(imageUrl.value)
+  }
+}
+const onUploadAvatar = async () => {
+  await userUpdateAvatarService(imageUrl.value)
+  ElMessage.success('修改头像成功')
+}
 </script>
 <template>
-  <el-upload class="avatar-uploader">
+  <el-upload
+    :auto-upload="false"
+    class="avatar-uploader"
+    :show-file-list="false"
+    :on-change="onSelectFile"
+    ref="uploadRef"
+  >
     <img v-if="imageUrl" :src="imageUrl" class="avatar" />
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
   </el-upload>
-  <el-button type="primary" :icon="Plus" size="large">修改头像</el-button>
-  <el-button type="success" :icon="Upload" size="large">上传头像</el-button>
+  <br />
+  <el-button
+    type="primary"
+    @click="uploadRef.$el.querySelector('input').click()"
+    :icon="Plus"
+    size="large"
+    >修改头像</el-button
+  >
+  <el-button @click="onUploadAvatar" type="success" :icon="Upload" size="large"
+    >上传头像</el-button
+  >
 </template>
 <style lang="scss" scoped>
 .avatar-uploader {
