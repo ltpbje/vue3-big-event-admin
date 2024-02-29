@@ -19,6 +19,7 @@ const onSelectFile = (uploadFile) => {
 }
 const onUploadAvatar = async () => {
   await userUpdateAvatarService(imageUrl.value)
+  await userStore.getUserInfo()
   ElMessage.success('修改头像成功')
 }
 </script>
